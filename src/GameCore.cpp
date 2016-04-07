@@ -40,3 +40,167 @@
 
 //Header
 #include "../include/GameCore.h"
+
+// Constants / Enums / Typedefs //
+const int CoreMemory::kUnlimitedMoves = -1;
+
+// CTOR/DTOR //
+GameCore::GameCore(int width, int height, int maxTries, int seed) :
+    //m_board - Init in initBoard().
+    m_status(Status::Continue),
+    m_triesCount(0),
+    m_maxTriesCount(maxTries),
+    m_random(seed)
+{
+    initBoard();
+}
+
+// Public Methods //
+//Card.
+const Card& GameCore::getCardAt(const CoreCoord::Coord &coord) const
+{
+    return m_board[coord.y][coord.x];
+}
+const Card& GameCore::getCardAt(int index) const
+{
+    return getCardAt(indexToCoord(coord));
+}
+
+//Board.
+const Board& GameCore::getBoard() const
+{
+    return m_board;
+}
+
+int GameCore::getWidth() const
+{
+    return m_board.size();
+}
+
+int GameCore::getHeight() const
+{
+    return m_board[0].size();
+}
+
+int GameCore::getPairsCount() const
+{
+    return (getHeight() * getWidth) / 2;
+}
+
+int GameCore::getMatchedPairsCount() const
+{
+    return m_matchedPairsCount;
+}
+
+int GameCore::getRemainingPairsCount() const
+{
+    return getPairsCount() - getMatchedPairsCount();
+}
+
+//Match.
+bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
+                          const CoreCoord::Coord &coord2)
+{
+    //Game is already over.
+    if(m_status != Status::Continue)
+        return false;
+
+    //Both must be valid coords.
+    if(!isValidCoord(coord1) || !isValidCoord(coord2))
+        return false;
+
+    //Let the cards decide if them are equal -
+    //See the logic at the Card::operator==().
+    auto &card1 = getCardAt(coord1);
+    auto &card2 = getCardAt(coord2);
+    if(card1 != card2)
+        return false;
+
+    //Increment the matched paris and tries count
+    //Check the status and Update the cards.
+    ++m_matchedPairsCount;
+    ++m_triesCount;
+
+    checkStatus();
+
+    const_cast<Card &>(card1).matched = true;
+    const_cast<Card &>(card2).matched = true;
+
+    return true;
+}
+bool GameCore::checkMatch(int index1, int index2)
+{
+    return checkMatch(indexToCoord(index1), indexToCoord(index2));
+}
+
+//Status.
+Status GameCore::getStatus() const
+{
+    return m_status;
+}
+
+//Tries.
+int GameCore::getTriesCount() const
+{
+    return m_triesCount;
+}
+int GameCore::getMaxTriesCount() const
+{
+    return m_maxTriesCount;
+}
+int GameCore::getRemainingTriesCount() const
+{
+    if(m_maxTriesCount == kUnlimitedMoves)
+        return -1;
+
+    return m_maxTriesCount - m_maxTriesCount;
+}
+
+//Seed.
+int GameCore::getSeed() const
+{
+    return m_random.getSeed();
+}
+bool GameCore::isUsingRandomSeed() const
+{
+    return m_random.isUsingRandomSeed();
+}
+
+//Helpers.
+CoreCoord::Coord GameCore::indexToCoord(int index) const
+{
+    return Coord(index / getWidth(),
+                 index % getWidth());
+}
+int GameCore::coordToIndex(const CoreCoord::Coord &coord) const
+{
+    return (coord.y * getHeight()) + coord.x;
+}
+
+bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
+{
+    return coord.y >= 0 && coord.y < getHeight()
+        && coord.x >= 0 && coord.x < getWidth();
+}
+bool GameCore::isValidIndex(int index) const
+{
+    return isValidCoord(indexToCoord(coord));
+}
+
+// Private Methods //
+void GameCore::checkStatus()
+{
+    //If player matched all cards let he wins, ignore the tries count.
+    if(getMatchedPairsCount() == getPairsCount())
+        m_status = Status::Victory;
+
+    //Tries count are at maximum - Player loses.
+    else if(getRemainingTriesCount() == 0)
+        m_status == Status::Defeat;
+
+    //Just continue...
+}
+void GameCore::initBoard()
+{
+
+}

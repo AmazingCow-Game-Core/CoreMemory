@@ -59,15 +59,7 @@ class GameCore
 {
     // Constants / Enums / Typedefs //
 public:
-    ///@brief Player has no restriction in how many moves can be
-    ///performed until the right sequence is found.
-    ///@see GameCore::GameCore().
-    static const int kUnlimitedMoves;
-
-    ///@brief Meta value meaning that a Random seed should be used.
-    ///@see GameCore::GameCore()
-    static const int kRandomSeed;
-
+    static const int kUnlimitedTries;
     typedef std::vector<Core::Coord::Vec> Board;
 
 
@@ -75,8 +67,8 @@ public:
 public:
     struct Card
     {
-        int value;
-        int match;
+        int  value;
+        bool matched;
     };
 
 
@@ -84,8 +76,8 @@ public:
 public:
     GameCore(int width,
              int height,
-             int maxMoves = kUnlimitedMoves,
-             int seed     = kRandomSeed);
+             int maxTries = kUnlimitedTries,
+             int seed     = CoreRandom::kRandomSeed);
 
 
     // Public Methods //
@@ -99,6 +91,8 @@ public:
     int getWidth() const;
     int getHeight() const;
     int getPairsCount() const;
+    int getMatchedPairsCount() const;
+    int getRemainingPairsCount() const;
 
     //Match.
     bool checkMatch(const CoreCoord::Coord &coord1,
@@ -129,14 +123,14 @@ public:
 private:
     void checkStatus();
     void initBoard();
-    void initRandomGenerator();
-
 
     // iVars //
 private:
     Board m_board;
 
     Status m_status;
+
+    int m_matchedPairsCount;
 
     int m_triesCount;
     int m_maxTriesCount;
