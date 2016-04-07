@@ -48,6 +48,7 @@ const int CoreMemory::kUnlimitedMoves = -1;
 GameCore::GameCore(int width, int height, int maxTries, int seed) :
     //m_board - Init in initBoard().
     m_status(Status::Continue),
+    m_matchedPairsCount(0),
     m_triesCount(0),
     m_maxTriesCount(maxTries),
     m_random(seed)
