@@ -49,11 +49,11 @@
 USING_NS_COREMEMORY;
 
 NS_COREMEMORY_BEGIN
-bool operator !=(const GameCore::Card &lhs, const GameCore::Card &rhs)
+bool operator ==(const GameCore::Card &lhs, const GameCore::Card &rhs)
 {
-    return !(lhs.value   == rhs.value   &&
-             lhs.matched == rhs.matched &&
-             lhs.matched == false);
+    return (lhs.value   == rhs.value   &&
+            lhs.matched == rhs.matched &&
+            lhs.matched == false);
 }
 NS_COREMEMORY_END
 
@@ -128,25 +128,30 @@ bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
     if(!isValidCoord(coord1) || !isValidCoord(coord2))
         return false;
 
-    //Let the cards decide if them are equal -
-    //See the logic at the Card::operator==().
-    auto &card1 = getCardAt(coord1);
-    auto &card2 = getCardAt(coord2);
-
-    if(card1 != card2)
+    //Coords must be different.
+    if(coord1 == coord2)
         return false;
 
-    //Increment the matched paris and tries count
-    //Check the status and Update the cards.
-    ++m_matchedPairsCount;
+    //Let the cards decide if them are equal -
+    //See the logic at the Card::operator==().
+    auto &card1        = getCardAt(coord1);
+    auto &card2        = getCardAt(coord2);
+    auto cardsAreEqual = (card1 == card2);
+
+    //Tries count is increment regardless
+    //if player hit the guess or not.
     ++m_triesCount;
+
+    if(cardsAreEqual)
+    {
+        ++m_matchedPairsCount;
+        const_cast<Card &>(card1).matched = true;
+        const_cast<Card &>(card2).matched = true;
+    }
 
     checkStatus();
 
-    const_cast<Card &>(card1).matched = true;
-    const_cast<Card &>(card2).matched = true;
-
-    return true;
+    return cardsAreEqual;
 }
 bool GameCore::checkMatch(int index1, int index2)
 {
@@ -215,14 +220,19 @@ std::string GameCore::ascii() const
     {
         for(const auto &card : line)
         {
-            ss << "[";
 
-            // if(card.matched)
+
+            if(!card.matched)
+            {
+                ss << "{";
                 ss << card.value;
-            // else
-                // ss << "X";
+                ss << "}";
+            }
+            else
+            {
+                ss << " . ";
+            }
 
-            ss << "]";
         }
         ss << "\n";
     }
