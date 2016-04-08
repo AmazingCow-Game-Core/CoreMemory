@@ -26,6 +26,17 @@ Here is a list of them:
 
 <!-- ####################################################################### -->
 
+## Dependencies:
+
+The CoreMemory depends on:
+
+* Amazing Cow's [CoreRandom](http://www.github.com/AmazingCore-Game-Core/CoreRandom).
+* Amazing Cow's [CoreCoord](http://www.github.com/AmazingCore-Game-Core/CoreCoord).
+
+
+
+<!-- ####################################################################### -->
+
 ## More info:
 We tried to document the Core extensively, so we think that is pretty ease to 
 get what the Core is doing, the API calls and stuff.   
