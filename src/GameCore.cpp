@@ -178,7 +178,7 @@ int GameCore::getRemainingTriesCount() const
     if(m_maxTriesCount == kUnlimitedTries)
         return -1;
 
-    return m_maxTriesCount - m_maxTriesCount;
+    return m_maxTriesCount - m_triesCount;
 }
 
 //Seed.
@@ -250,7 +250,7 @@ void GameCore::checkStatus()
 
     //Tries count are at maximum - Player loses.
     else if(getRemainingTriesCount() == 0)
-        m_status == Status::Defeat;
+        m_status = Status::Defeat;
 
     //Just continue...
 }
