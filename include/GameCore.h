@@ -57,12 +57,6 @@ NS_COREMEMORY_BEGIN
 
 class GameCore
 {
-    // Constants / Enums / Typedefs //
-public:
-    static const int kUnlimitedTries;
-    typedef std::vector<Core::Coord::Vec> Board;
-
-
     // Inner Types //
 public:
     struct Card
@@ -71,20 +65,25 @@ public:
         bool matched;
     };
 
+// Constants / Enums / Typedefs //
+public:
+    static const int kUnlimitedTries;
+    typedef std::vector<std::vector<Card>> Board;
+
 
     // CTOR/DTOR //
 public:
     GameCore(int width,
              int height,
              int maxTries = kUnlimitedTries,
-             int seed     = CoreRandom::kRandomSeed);
+             int seed     = CoreRandom::Random::kRandomSeed);
 
 
     // Public Methods //
 public:
     //Card.
-    const Card& getCardAt(const CoreCoord::Coord &coord) const;
-    const Card& getCardAt(int index) const;
+    const GameCore::Card& getCardAt(const CoreCoord::Coord &coord) const;
+    const GameCore::Card& getCardAt(int index) const;
 
     //Board.
     const Board& getBoard() const;

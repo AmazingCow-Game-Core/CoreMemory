@@ -41,8 +41,22 @@
 //Header
 #include "../include/GameCore.h"
 
+//Usings
+USING_NS_COREMEMORY;
+
+NS_COREMEMORY_BEGIN
+bool operator !=(const GameCore::Card &lhs, const GameCore::Card &rhs)
+{
+    return !(lhs.value   == rhs.value   &&
+             lhs.matched == rhs.matched &&
+             lhs.matched == false);
+}
+NS_COREMEMORY_END
+
+
+
 // Constants / Enums / Typedefs //
-const int CoreMemory::kUnlimitedMoves = -1;
+const int GameCore::kUnlimitedTries = -1;
 
 // CTOR/DTOR //
 GameCore::GameCore(int width, int height, int maxTries, int seed) :
@@ -58,17 +72,17 @@ GameCore::GameCore(int width, int height, int maxTries, int seed) :
 
 // Public Methods //
 //Card.
-const Card& GameCore::getCardAt(const CoreCoord::Coord &coord) const
+const GameCore::Card& GameCore::getCardAt(const CoreCoord::Coord &coord) const
 {
     return m_board[coord.y][coord.x];
 }
-const Card& GameCore::getCardAt(int index) const
+const GameCore::Card& GameCore::getCardAt(int index) const
 {
-    return getCardAt(indexToCoord(coord));
+    return getCardAt(indexToCoord(index));
 }
 
 //Board.
-const Board& GameCore::getBoard() const
+const GameCore::Board& GameCore::getBoard() const
 {
     return m_board;
 }
@@ -85,7 +99,7 @@ int GameCore::getHeight() const
 
 int GameCore::getPairsCount() const
 {
-    return (getHeight() * getWidth) / 2;
+    return (getHeight() * getWidth()) / 2;
 }
 
 int GameCore::getMatchedPairsCount() const
@@ -114,6 +128,7 @@ bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
     //See the logic at the Card::operator==().
     auto &card1 = getCardAt(coord1);
     auto &card2 = getCardAt(coord2);
+
     if(card1 != card2)
         return false;
 
@@ -151,7 +166,7 @@ int GameCore::getMaxTriesCount() const
 }
 int GameCore::getRemainingTriesCount() const
 {
-    if(m_maxTriesCount == kUnlimitedMoves)
+    if(m_maxTriesCount == kUnlimitedTries)
         return -1;
 
     return m_maxTriesCount - m_maxTriesCount;
@@ -170,8 +185,8 @@ bool GameCore::isUsingRandomSeed() const
 //Helpers.
 CoreCoord::Coord GameCore::indexToCoord(int index) const
 {
-    return Coord(index / getWidth(),
-                 index % getWidth());
+    return CoreCoord::Coord(index / getWidth(),
+                            index % getWidth());
 }
 int GameCore::coordToIndex(const CoreCoord::Coord &coord) const
 {
@@ -185,7 +200,7 @@ bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
 }
 bool GameCore::isValidIndex(int index) const
 {
-    return isValidCoord(indexToCoord(coord));
+    return isValidCoord(indexToCoord(index));
 }
 
 // Private Methods //
@@ -200,8 +215,4 @@ void GameCore::checkStatus()
         m_status == Status::Defeat;
 
     //Just continue...
-}
-void GameCore::initBoard()
-{
-
 }
