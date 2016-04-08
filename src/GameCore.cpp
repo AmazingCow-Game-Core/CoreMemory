@@ -252,6 +252,8 @@ void GameCore::initBoard(int width, int height)
 {
     auto pairsCount = (width * height) / 2;
 
+    //Initialize the pairsCount with 2 cards of each value.
+    //They will be shuffle later.
     std::vector<Card> pairsVec;
     pairsVec.reserve(pairsCount);
 
@@ -262,11 +264,13 @@ void GameCore::initBoard(int width, int height)
     }
 
 
+    //Shuffle the pairs...
     std::shuffle(std::begin(pairsVec),
                  std::end(pairsVec),
                  m_random.getNumberGenerator());
 
 
+    //Add the pairs on board.
     m_board.reserve(height);
     for(int i = 0; i < height; ++i)
     {
