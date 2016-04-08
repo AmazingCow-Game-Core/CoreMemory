@@ -52,8 +52,8 @@ obj:
 	g++ -std=c++11 -c              \
 	    -I./lib/CoreRandom/include \
 	    -I./lib/CoreCoord/include  \
-	    ./lib/CoreRandom/src       \
-	    ./lib/CoreCoord/src        \
+	    ./lib/CoreRandom/src/*.cpp \
+	    ./lib/CoreCoord/src/*.cpp  \
 	    ./src/*.cpp
 
 	mv *.o ./obj/
@@ -62,7 +62,12 @@ obj:
 bin:
 	mkdir -p ./bin
 
-	g++ -std=c++11 -D__AMAZINGCORE_COREMEMORY_TEST_ENABLED__ \
-	    ./src/*.cpp                                          \
-	    ./test_game/main.cpp                                 \
+	g++ -std=c++11                                \
+		-D__AMAZINGCORE_COREMEMORY_TEST_ENABLED__ \
+	    -I./lib/CoreRandom/include                \
+	    -I./lib/CoreCoord/include                 \
+	    ./lib/CoreRandom/src/*.cpp                \
+	    ./lib/CoreCoord/src/*.cpp                 \
+	    ./src/*.cpp                               \
+	    ./test_game/main.cpp                      \
 	    -o ./bin/testgame
