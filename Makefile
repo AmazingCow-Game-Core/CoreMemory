@@ -49,7 +49,12 @@ clean:
 #Create the object files for Core.
 obj:
 	mkdir -p ./obj
-	g++ -std=c++11 -c ./src/*.cpp
+	g++ -std=c++11 -c              \
+	    -I./lib/CoreRandom/include \
+	    -I./lib/CoreCoord/include  \
+	    ./lib/CoreRandom/src       \
+	    ./lib/CoreCoord/src        \
+	    ./src/*.cpp
 
 	mv *.o ./obj/
 
