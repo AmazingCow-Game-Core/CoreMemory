@@ -61,6 +61,13 @@ class GameCore
 public:
     struct Card
     {
+        Card(int v) :
+            value(v),
+            matched(false)
+        {
+            //Empty...
+        }
+
         int  value;
         bool matched;
     };
@@ -117,11 +124,13 @@ public:
     bool isValidCoord(const CoreCoord::Coord &coord) const;
     bool isValidIndex(int index) const;
 
+    //ascii
+    std::string ascii() const;
 
     // Private Methods //
 private:
     void checkStatus();
-    void initBoard();
+    void initBoard(int width, int height);
 
     // iVars //
 private:

@@ -40,6 +40,10 @@
 
 //Header
 #include "../include/GameCore.h"
+//std
+#include <algorithm>
+#include <sstream>
+#include <iostream>
 
 //Usings
 USING_NS_COREMEMORY;
@@ -67,7 +71,7 @@ GameCore::GameCore(int width, int height, int maxTries, int seed) :
     m_maxTriesCount(maxTries),
     m_random(seed)
 {
-    initBoard();
+    initBoard(width, height);
 }
 
 // Public Methods //
@@ -203,6 +207,30 @@ bool GameCore::isValidIndex(int index) const
     return isValidCoord(indexToCoord(index));
 }
 
+//ascii
+std::string GameCore::ascii() const
+{
+    std::stringstream ss;
+    for(const auto &line : m_board)
+    {
+        for(const auto &card : line)
+        {
+            ss << "[";
+
+            // if(card.matched)
+                ss << card.value;
+            // else
+                // ss << "X";
+
+            ss << "]";
+        }
+        ss << "\n";
+    }
+
+    return ss.str();
+}
+
+
 // Private Methods //
 void GameCore::checkStatus()
 {
@@ -215,4 +243,33 @@ void GameCore::checkStatus()
         m_status == Status::Defeat;
 
     //Just continue...
+}
+
+void GameCore::initBoard(int width, int height)
+{
+    auto pairsCount = (width * height) / 2;
+
+    std::vector<Card> pairsVec;
+    pairsVec.reserve(pairsCount);
+
+    for(int i = 0; i < pairsCount; ++i)
+    {
+        pairsVec.emplace_back(i);
+        pairsVec.emplace_back(i);
+    }
+
+
+    std::shuffle(std::begin(pairsVec),
+                 std::end(pairsVec),
+                 m_random.getNumberGenerator());
+
+
+    m_board.reserve(height);
+    for(int i = 0; i < height; ++i)
+    {
+        m_board.push_back(Board::value_type(
+            std::begin(pairsVec) + (i * width),        //Offset in pairsVec
+            std::begin(pairsVec) + (i * width + width) //Offset in pairsVec + how many to copy
+        ));
+    }
 }
