@@ -62,6 +62,35 @@ void usage()
 
 int main(int argc, const char *argv[])
 {
+    GameCore core(4, 4, GameCore::kUnlimitedTries);
+
+    while(core.getStatus() == Status::Continue)
+    {
+        cout << core.ascii() << endl;
+        cout << "Width               : "  << core.getWidth()               << endl;
+        cout << "Height              : "  << core.getHeight()              << endl;
+        cout << "PairsCount          : "  << core.getPairsCount()          << endl;
+        cout << "MatchedPairsCount   : "  << core.getMatchedPairsCount()   << endl;
+        cout << "RemainingPairsCount : "  << core.getRemainingPairsCount() << endl;
+        cout << "-----------------------" << endl;
+        cout << "Status : "               << core.getStatus() << endl;
+        cout << "-----------------------" << endl;
+        cout << "TriesCount          : "  << core.getTriesCount()          << endl;
+        cout << "MaxTriesCount       : "  << core.getMaxTriesCount()       << endl;
+        cout << "RemainingTriesCount : "  << core.getRemainingTriesCount() << endl;
+        cout << "-----------------------" << endl;
+        cout << "Seed              : "    << core.getSeed() << endl;
+        cout << "isUsingRandomSeed : "    << core.isUsingRandomSeed() << endl;
+        cout << "-----------------------" << endl;
+
+        int c1y, c1x , c2y, c2x;
+        cout << "cards?: " << endl;
+        cin >> c1y >> c1x >> c2y >> c2x;
+
+        cout << "Matched: " << core.checkMatch(CoreCoord::Coord(c1y, c1x),
+                                               CoreCoord::Coord(c2y, c2x)) << endl;
+    }
+
 }
 
 #endif // __AMAZINGCORE_MEMORYCORE_TEST_ENABLED__ //
