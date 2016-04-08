@@ -48,17 +48,6 @@
 //Usings
 USING_NS_COREMEMORY;
 
-NS_COREMEMORY_BEGIN
-bool operator ==(const GameCore::Card &lhs, const GameCore::Card &rhs)
-{
-    return (lhs.value   == rhs.value   &&
-            lhs.matched == rhs.matched &&
-            lhs.matched == false);
-}
-NS_COREMEMORY_END
-
-
-
 // Constants / Enums / Typedefs //
 const int GameCore::kUnlimitedTries = -1;
 
@@ -132,11 +121,15 @@ bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
     if(coord1 == coord2)
         return false;
 
-    //Let the cards decide if them are equal -
-    //See the logic at the Card::operator==().
-    auto &card1        = getCardAt(coord1);
-    auto &card2        = getCardAt(coord2);
-    auto cardsAreEqual = (card1 == card2);
+    //Get the cards.
+    auto &card1 = getCardAt(coord1);
+    auto &card2 = getCardAt(coord2);
+
+    //Already matched...
+    if(card1.matched || card2.matched)
+        return false;
+
+    auto cardsAreEqual = (card1.value == card2.value);
 
     //Tries count is increment regardless
     //if player hit the guess or not.
