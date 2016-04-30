@@ -1,2 +1,7 @@
+[version 0.1.1] - April 29, 2016
+    - Sort the includes
+    - Update the version numbers.
+    - Some cosmetic changes.
+
 [version 0.1.0] - April 8, 2016
     - Finish the basic implementation.
