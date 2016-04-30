@@ -42,10 +42,11 @@
 #define __CoreMemory_include_CoreMemory_Types_h__
 
 //std
-#include <vector>
 #include <ostream>
+#include <vector>
 //CoreMemory
 #include "CoreMemory_Utils.h"
+
 
 NS_COREMEMORY_BEGIN
 

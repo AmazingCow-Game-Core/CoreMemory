@@ -44,13 +44,14 @@
 //since is very unlikely that this flag is defined elsewhere.
 #ifdef __AMAZINGCORE_COREMEMORY_TEST_ENABLED__
 
+#include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <cstdlib>
 #include "../include/CoreMemory.h"
 
 USING_NS_COREMEMORY;
 using namespace std;
+
 
 void usage()
 {

@@ -54,11 +54,11 @@ const int GameCore::kUnlimitedTries = -1;
 // CTOR/DTOR //
 GameCore::GameCore(int width, int height, int maxTries, int seed) :
     //m_board - Init in initBoard().
-    m_status(Status::Continue),
-    m_matchedPairsCount(0),
-    m_triesCount(0),
-    m_maxTriesCount(maxTries),
-    m_random(seed)
+    m_status            (Status::Continue),
+    m_matchedPairsCount (0),
+    m_triesCount        (0),
+    m_maxTriesCount     (maxTries),
+    m_random            (seed)
 {
     initBoard(width, height);
 }
@@ -213,8 +213,6 @@ std::string GameCore::ascii() const
     {
         for(const auto &card : line)
         {
-
-
             if(!card.matched)
             {
                 ss << "{";
@@ -225,7 +223,6 @@ std::string GameCore::ascii() const
             {
                 ss << " . ";
             }
-
         }
         ss << "\n";
     }
@@ -276,7 +273,8 @@ void GameCore::initBoard(int width, int height)
     {
         m_board.push_back(Board::value_type(
             std::begin(pairsVec) + (i * width),        //Offset in pairsVec
-            std::begin(pairsVec) + (i * width + width) //Offset in pairsVec + how many to copy
+            std::begin(pairsVec) + (i * width + width) //Offset in pairsVec
+                                                       //+ how many to copy
         ));
     }
 }

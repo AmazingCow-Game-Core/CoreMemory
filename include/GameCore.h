@@ -45,8 +45,8 @@
 #include <string>
 #include <vector>
 //CoreMemory
-#include "CoreMemory_Utils.h"
 #include "CoreMemory_Types.h"
+#include "CoreMemory_Utils.h"
 //CoreCoord
 #include "CoreCoord.h"
 //CoreRandom
@@ -72,7 +72,7 @@ public:
         bool matched;
     };
 
-// Constants / Enums / Typedefs //
+    // Constants / Enums / Typedefs //
 public:
     static const int kUnlimitedTries;
     typedef std::vector<std::vector<Card>> Board;
