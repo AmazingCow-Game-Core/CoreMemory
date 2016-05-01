@@ -1,7 +1,61 @@
+--------------------------------------------------------------------------------
+| Version 0.2.x                                                                |
+--------------------------------------------------------------------------------
+v0.2.0 - [May 1, 2016] - Senna we miss you :`(
+-- General --
+    - Better error checking.
+      GameCore throws an exception if there are invalid values.
+    - [BUGFIX] getWidth() and getHeight were swaped.
+    - Improve documentation.
+    - New README.
+    - Add doxygen stuff.
+
+-- Source --
+    include/CoreMemory_Utils.h
+        - Update version numbers.
+
+    include/GameCore.h
+        - Add doxygen documentation.
+
+    src/GameCore.cpp
+        - Better error checking
+          GameCore throws an exception if there are invalid values.
+        - Remove the magic number from getRemainingTriesCount().
+        - Some cosmetic changes.
+        - Sort the includes.
+        - [BUGFIX] getWidth() and getHeight were swaped.
+
+    test_game/main.cpp
+        - Improve the test game.
+          Let user pass the command line options.
+          Player can play with coords and indexes.
+
+    Makefile
+        - Cosmetic changes.
+
+-- Info Files --
+    README.md
+        - Rewrite the README to consistency with other
+          Amazing Cow's READMEs.
+
+    CHANGELOG.txt
+        - Split the CHANGELOG entry in sections.
+
+    mainpage.dox
+        - Add the mainpage doxygen documentation.
+
+-- Others --
+    Doxyfile
+        - Add the doxygen configuration.
+
+--------------------------------------------------------------------------------
+| Version 0.1.x                                                                |
+--------------------------------------------------------------------------------
 [version 0.1.1] - April 29, 2016
     - Sort the includes
     - Update the version numbers.
     - Some cosmetic changes.
 
+--------------------------------------------------------------------------------
 [version 0.1.0] - April 8, 2016
     - Finish the basic implementation.
