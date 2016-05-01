@@ -56,14 +56,27 @@ using namespace std;
 void usage()
 {
     cout << "Amazing Cow - CoreMemory Test Game" << endl;
-    cout << "Usage:" << endl;
+    cout << "Usage:"  << endl
+         << "  testgame <width> <height> <seed> <use-index>" << endl
+         << "Example:" << endl
+         << "  testgame 5 4 -1 1 #width 5 - height 4 - random seed - use index" << endl
+         << "  testgame 5 4  3 0 #width 5 - height 4 - seed 3 - use coords"
+         << endl;
 
     exit(1);
 }
 
 int main(int argc, const char *argv[])
 {
-    GameCore core(4, 4, GameCore::kUnlimitedTries);
+    if(argc != 5)
+        usage();
+
+    int width  = atoi(argv[1]);
+    int height = atoi(argv[2]);
+    int seed   = atoi(argv[3]);
+    int index  = atoi(argv[4]);
+
+    GameCore core(width, height, GameCore::kUnlimitedTries, seed);
 
     while(core.getStatus() == Status::Continue)
     {
@@ -84,12 +97,37 @@ int main(int argc, const char *argv[])
         cout << "isUsingRandomSeed : "    << core.isUsingRandomSeed() << endl;
         cout << "-----------------------" << endl;
 
-        int c1y, c1x , c2y, c2x;
-        cout << "cards?: " << endl;
-        cin >> c1y >> c1x >> c2y >> c2x;
 
-        cout << "Matched: " << core.checkMatch(CoreCoord::Coord(c1y, c1x),
-                                               CoreCoord::Coord(c2y, c2x)) << endl;
+        CoreCoord::Coord card1, card2;
+
+        if(index)
+        {
+            cout << "cards (index)?: " << endl;
+
+            int c1, c2;
+            cin >> c1 >> c2;
+
+            card1 = core.indexToCoord(c1);
+            card2 = core.indexToCoord(c2);
+
+            cout << "COORDS: " << endl;
+            cout << card1 << endl;
+            cout << card2 << endl;
+        }
+        else
+        {
+            cout << "cards (coords)?: " << endl;
+
+            int c1y, c1x;
+            int c2y, c2x;
+
+            cin >> c1y >> c1x >> c2y >> c2x;
+
+            card1 = CoreCoord::Coord(c1y, c1x);
+            card2 = CoreCoord::Coord(c2y, c2x);
+        }
+
+        cout << "Matched: " << core.checkMatch(card1, card2) << endl;
     }
 
 }
