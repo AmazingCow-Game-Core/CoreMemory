@@ -80,6 +80,25 @@ public:
 
     // CTOR/DTOR //
 public:
+    ///@brief
+    ///     Constructs a new Memory Game Core.
+    ///@param width
+    ///       The width of board -
+    ///       The (width * height) must yield a even number.
+    ///@param height
+    ///       The height of board -
+    //        The (width * height) must yield a even number.
+    ///@param maxTries
+    ///       How many times player can try match the cards.
+    ///       Default is kUnlimitedTries.
+    ///@param seed
+    ///       The seed that will be used to generate the board.
+    ///       Default is CoreRandom::Random::kRandomSeed.
+    ///@note The (width * height) must yield a even number,
+    ///      if not an exception will be throw.
+    ///@throws logic_error if the (width * height) doesn't yield a even number.
+    ///@see
+    ///     kUnlimitedTries, CoreRandom::Random::kRandomSeed.
     GameCore(int width,
              int height,
              int maxTries = kUnlimitedTries,
@@ -89,8 +108,18 @@ public:
     // Public Methods //
 public:
     //Card.
+    ///@brief Get the card at coord.
+    ///@param coord
+    ///       A valid coord in board bounds.
+    ///@warning This method will not check the coord validity.
+    ///@see getCardAt(), getBoard(), isValidCoord()
     const GameCore::Card& getCardAt(const CoreCoord::Coord &coord) const;
+
+    ///@brief Get the card at index.
+    ///@note Check the documentation for coord version.
+    ///@see coordToIndex, indexToCoord.
     const GameCore::Card& getCardAt(int index) const;
+
 
     //Board.
     const Board& getBoard() const;
@@ -101,21 +130,73 @@ public:
     int getRemainingPairsCount() const;
 
     //Match.
+    ///@brief
+    ///     Check if the cards matches.
+    ///     The cards matches if the following conditions are met: \n
+    ///     1 - Both coords are valid.                             \n
+    ///     2 - Both coords are different, i.e. are not same card. \n
+    ///     3 - None of cards are already matched.                 \n
+    ///                                                            \n
+    ///     Status might be changed after this method users
+    ///     should call getStatus() to check if game is over.
+    ///@param coord1
+    ///     A valid coord in board bounds.
+    ///@param coord2
+    ///     A valid coord in board bounds.
+    ///@see
+    ///     getStatus(), getPairsCount(), getMatchedPairsCount(),
+    ///     getRemainingPairsCount(),
     bool checkMatch(const CoreCoord::Coord &coord1,
                     const CoreCoord::Coord &coord2);
+
+    ///@brief Check if the cards matches.
+    ///@note Check the documentation for coord version.
     bool checkMatch(int index1, int index2);
 
+
     //Status.
+    ///@brief Get the current status of game.
+    ///@returns The game status.
     Status getStatus() const;
 
+
     //Tries.
+    ///@brief Get how many tries player did so far.
+    ///@returns How many tries player did.
+    ///@see getStatus(), getMaxTriesCount(), getRemainingTriesCount()
     int getTriesCount() const;
+
+    ///@brief Get how many tries player can do.
+    ///@note
+    ///     If kUnlimitedTries is used in CTOR, this method
+    ///     will return the kUnlimitedTries value.
+    ///@returns How many tries player can do.
+    ///@see
+    ///     kUnlimitedTries, getStatus(),
+    //      getTriesCount(), getRemainingTriesCount()
     int getMaxTriesCount() const;
+
+    ///@brief Get how many tries player can do yet.
+    ///@note
+    ///     If kUnlimitedTries is used in CTOR, this method
+    ///     will return the kUnlimitedTries value.
+    ///@returns How many tries player can do yet.
+    ///@see
+    ///     kUnlimitedTries, getStatus(),
+    //      getTriesCount(), getMaxTriesCount()
     int getRemainingTriesCount() const;
 
+
     //Seed.
+    ///@brief Gets the actual seed used by CoreRandom::Random.
+    ///@returns The actual seed the is being used.
+    ///@see isUsingRandomSeed().
     int getSeed() const;
+    ///@brief Gets if CoreRandom::Random was initialized with a random seed.
+    ///@returns True if a random seed is being used, false otherwise.
+    ///@see getSeed().
     bool isUsingRandomSeed() const;
+
 
     //Helpers.
     CoreCoord::Coord indexToCoord(int index) const;
