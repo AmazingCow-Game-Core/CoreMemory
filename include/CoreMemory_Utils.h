@@ -52,9 +52,9 @@
 
 //The core version number.
 #define COW_COREMEMORY_VERSION_MAJOR    "0"
-#define COW_COREMEMORY_VERSION_MINOR    "1"
-#define COW_COREMEMORY_VERSION_REVISION "1"
+#define COW_COREMEMORY_VERSION_MINOR    "2"
+#define COW_COREMEMORY_VERSION_REVISION "0"
 
-#define COW_COREMEMORY_VERSION "0.1.1"
+#define COW_COREMEMORY_VERSION "0.2.0"
 
 #endif // defined(__CoreMemory_include_CoreMemory_Utils_h__) //
