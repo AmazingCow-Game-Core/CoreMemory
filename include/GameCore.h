@@ -59,6 +59,14 @@ class GameCore
 {
     // Inner Types //
 public:
+    ///@brief
+    ///     Card representation in Memory GameCore.
+    ///     Very simple type, just to have meaningful way to
+    ///     represent the Cards.
+    ///     It isn't intent to be created or modified by users
+    ///     directly, but instead, used as read-only from methods
+    ///     from GameCore.
+    ///@see GameCore::getCardAt(), GameCore::getBoard().
     struct Card
     {
         Card(int v) :
@@ -74,7 +82,12 @@ public:
 
     // Constants / Enums / Typedefs //
 public:
+    ///@brief
+    ///     Meta-value to indicate that
+    ///     Game doesn't enforce a amount of tries.
     static const int kUnlimitedTries;
+
+    ///@brief just to reduce verbosity.
     typedef std::vector<std::vector<Card>> Board;
 
 
@@ -83,20 +96,24 @@ public:
     ///@brief
     ///     Constructs a new Memory Game Core.
     ///@param width
-    ///       The width of board -
-    ///       The (width * height) must yield a even number.
+    ///     The width of board -
+    ///     The (width * height) must yield a even number.
     ///@param height
-    ///       The height of board -
-    //        The (width * height) must yield a even number.
+    ///     The height of board -
+    ///     The (width * height) must yield a even number.
     ///@param maxTries
-    ///       How many times player can try match the cards.
-    ///       Default is kUnlimitedTries.
+    ///     How many times player can try match the cards.
+    ///     Default is kUnlimitedTries.
     ///@param seed
-    ///       The seed that will be used to generate the board.
-    ///       Default is CoreRandom::Random::kRandomSeed.
+    ///     The seed that will be used to generate the board.
+    ///     Default is CoreRandom::Random::kRandomSeed.
     ///@note The (width * height) must yield a even number,
     ///      if not an exception will be throw.
-    ///@throws logic_error if the (width * height) doesn't yield a even number.
+    ///@warning
+    ///     The CTOR will not do any valid checks besides checking
+    ///     if the (width * height) is a even number. Users must
+    ///     pass positive integers.
+    ///@throws domain_error if the (width * height) doesn't yield a even number.
     ///@see
     ///     kUnlimitedTries, CoreRandom::Random::kRandomSeed.
     GameCore(int width,
@@ -122,12 +139,36 @@ public:
 
 
     //Board.
+    ///@brief Gets the current state of Game Board.
+    ///@returns A reference to the Game Board.
+    ///@see Board, Card, getCardAt()
     const Board& getBoard() const;
+
+    ///@brief Gets the width of Board.
+    ///@returns The width of Board.
+    ///@see Board, getBoard(), getHeight().
     int getWidth() const;
+
+    ///@brief Gets the height of Board.
+    ///@returns The height of Board.
+    ///@see Board, getBoard(), getWidth().
     int getHeight() const;
+
+    ///@brief Gets the number of pairs in game.
+    ///@returns The number of pairs.
+    ///@see getMatchedPairsCount(), getRemainingPairsCount().
     int getPairsCount() const;
+
+    ///@brief Gets the number of pairs that is already matched.
+    ///@returns The number of pairs.
+    ///@see getPairsCount(), getRemainingPairsCount().
     int getMatchedPairsCount() const;
+
+    ///@brief Gets the number of pairs that player still has to match.
+    ///@returns The number of pairs.
+    ///@see getPairsCount(), getMatchedPairsCount().
     int getRemainingPairsCount() const;
+
 
     //Match.
     ///@brief
@@ -199,13 +240,33 @@ public:
 
 
     //Helpers.
+    ///@brief Transforms a index to a Coord.
+    ///@returns A coord that represents that index.
+    ///@warning
+    ///     This method will not check the index, nor the
+    ///     resulting coord validity.
+    ///@see coordToIndex(), isValidCoord(), isValidIndex().
     CoreCoord::Coord indexToCoord(int index) const;
+
+    ///@brief Transforms a Coord to a Index.
+    ///@returns A index that represents that coord.
+    ///@warning
+    ///     This method will not check the coord, nor the
+    ///     resulting index validity.
+    ///@see indexToCoord(), isValidCoord(), isValidIndex().
     int coordToIndex(const CoreCoord::Coord &coord) const;
 
+    ///@brief Checks if coord is in Board bounds.
+    ///@return True if in bounds, false otherwise.
     bool isValidCoord(const CoreCoord::Coord &coord) const;
+
+    ///@brief Checks if index is in Board bounds.
+    ///@return True if in bounds, false otherwise.
     bool isValidIndex(int index) const;
 
     //ascii
+    ///@brief Returns a presentation of board.
+    ///@note Intended for debug only.
     std::string ascii() const;
 
     // Private Methods //
