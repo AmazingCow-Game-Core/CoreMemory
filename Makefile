@@ -63,7 +63,7 @@ bin:
 	mkdir -p ./bin
 
 	g++ -std=c++11                                \
-		-D__AMAZINGCORE_COREMEMORY_TEST_ENABLED__ \
+	    -D__AMAZINGCORE_COREMEMORY_TEST_ENABLED__ \
 	    -I./lib/CoreRandom/include                \
 	    -I./lib/CoreCoord/include                 \
 	    ./lib/CoreRandom/src/*.cpp                \
