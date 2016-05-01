@@ -43,10 +43,11 @@
 //std
 #include <algorithm>
 #include <sstream>
-#include <iostream>
+#include <stdexcept>
 
 //Usings
 USING_NS_COREMEMORY;
+
 
 // Constants / Enums / Typedefs //
 const int GameCore::kUnlimitedTries = -1;
@@ -60,6 +61,16 @@ GameCore::GameCore(int width, int height, int maxTries, int seed) :
     m_maxTriesCount     (maxTries),
     m_random            (seed)
 {
+    if((width * height) % 2 != 0)
+    {
+        std::stringstream ss;
+
+        ss << "(width * height) must yield a even number. "
+           << "width: "  << width  << " - "
+           << "height: " << height << std::endl;
+
+        throw std::domain_error(ss.str());
+    }
     initBoard(width, height);
 }
 
@@ -82,12 +93,12 @@ const GameCore::Board& GameCore::getBoard() const
 
 int GameCore::getWidth() const
 {
-    return m_board.size();
+    return m_board[0].size();
 }
 
 int GameCore::getHeight() const
 {
-    return m_board[0].size();
+    return m_board.size();
 }
 
 int GameCore::getPairsCount() const
@@ -169,7 +180,7 @@ int GameCore::getMaxTriesCount() const
 int GameCore::getRemainingTriesCount() const
 {
     if(m_maxTriesCount == kUnlimitedTries)
-        return -1;
+        return kUnlimitedTries;
 
     return m_maxTriesCount - m_triesCount;
 }
