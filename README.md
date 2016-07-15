@@ -3,18 +3,6 @@
 **Made with <3 by [Amazing Cow](http://www.amazingcow.com).**
 
 
-
-<!-- ####################################################################### -->
-<!-- ####################################################################### -->
-
-## Websites:
-
-* [CoreMemory Website](http://opensource.amazingcow.com/gamecore/corememory/)
-* [Game Core Website](http://opensource.amazingcow.com/gamecore/) - 
-The Amazing Cow's Game Cores site.
-
-
-
 <!-- ####################################################################### -->
 <!-- ####################################################################### -->
 
@@ -51,9 +39,7 @@ Check out the ```./test_game/main.cpp``` to a peek of how use this lib.
 We strive to make our source code fully documented.   
 While there are a myriad of comments, one might find useful take a look at:
 
-* [Project Website](http://opensource.amazingcow.com/gamecore/corememory/).
-* [Doxygen Docs](http://opensource.amazingcow.com/gamecore/corememory/doxygen/).
-* [A list of blog posts about the project](http://opensource.amazingcow.com/gamecore/corememory/posts/).
+* [Doxygen Docs](http://www.amazingcow.com/projects/corememory/doxygen/).
 
 Anyway if you didn't understand something let us know sending a mail to  
 [help_opensource@amazingcow.com]() with the subject filled with the
