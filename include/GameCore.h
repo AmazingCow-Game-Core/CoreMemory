@@ -104,6 +104,9 @@ public:
     ///@param maxTries
     ///     How many times player can try match the cards.
     ///     Default is kUnlimitedTries.
+    ///@param matchCountAsTrye
+    ///     A match will increment the triesCount if True
+    ///     or will not increment if false.
     ///@param seed
     ///     The seed that will be used to generate the board.
     ///     Default is CoreRandom::Random::kRandomSeed.
@@ -116,15 +119,15 @@ public:
     ///@throws domain_error if the (width * height) doesn't yield a even number.
     ///@see
     ///     kUnlimitedTries, CoreRandom::Random::kRandomSeed.
-    GameCore(int width,
-             int height,
-             int maxTries = kUnlimitedTries,
-             int seed     = CoreRandom::Random::kRandomSeed);
+    GameCore(int  width,
+             int  height,
+             int  maxTries        = kUnlimitedTries,
+             bool matchCountAsTry = true,
+             int  seed            = CoreRandom::Random::kRandomSeed);
 
 
-    // Public Methods //
-public:
-    //Card.
+    // Card //
+public:    
     ///@brief Get the card at coord.
     ///@param coord
     ///       A valid coord in board bounds.
@@ -138,7 +141,8 @@ public:
     const GameCore::Card& getCardAt(int index) const;
 
 
-    //Board.
+    // Board //
+public:
     ///@brief Gets the current state of Game Board.
     ///@returns A reference to the Game Board.
     ///@see Board, Card, getCardAt()
@@ -154,6 +158,9 @@ public:
     ///@see Board, getBoard(), getWidth().
     int getHeight() const;
 
+
+    // Pairs //
+public:
     ///@brief Gets the number of pairs in game.
     ///@returns The number of pairs.
     ///@see getMatchedPairsCount(), getRemainingPairsCount().
@@ -170,7 +177,8 @@ public:
     int getRemainingPairsCount() const;
 
 
-    //Match.
+    // Match //
+public:
     ///@brief
     ///     Check if the cards matches.
     ///     The cards matches if the following conditions are met: \n
@@ -195,13 +203,15 @@ public:
     bool checkMatch(int index1, int index2);
 
 
-    //Status.
+    // Status //
+public:
     ///@brief Get the current status of game.
     ///@returns The game status.
     Status getStatus() const;
 
 
-    //Tries.
+    // Tries //
+public:
     ///@brief Get how many tries player did so far.
     ///@returns How many tries player did.
     ///@see getStatus(), getMaxTriesCount(), getRemainingTriesCount()
@@ -228,7 +238,18 @@ public:
     int getRemainingTriesCount() const;
 
 
-    //Seed.
+    ///@brief
+    ///      Get if a tries count is incremented in a
+    ///      match is done.
+    ///@returns True if triesCount is incremented, false otherwise.
+    ///@see
+    ///  kUnlimitedTries, getStatus(),
+    ///  getTriesCount, getRemainingTriesCount, getMaxTriesCount()
+    bool getMatchCountAsTry() const;
+
+
+    // Seed //
+public:
     ///@brief Gets the actual seed used by CoreRandom::Random.
     ///@returns The actual seed the is being used.
     ///@see isUsingRandomSeed().
@@ -239,7 +260,8 @@ public:
     bool isUsingRandomSeed() const;
 
 
-    //Helpers.
+    // Helpers //
+public:
     ///@brief Transforms a index to a Coord.
     ///@returns A coord that represents that index.
     ///@warning
@@ -264,15 +286,19 @@ public:
     ///@return True if in bounds, false otherwise.
     bool isValidIndex(int index) const;
 
-    //ascii
+
+    // ascii //
+public:
     ///@brief Returns a presentation of board.
     ///@note Intended for debug only.
     std::string ascii() const;
+
 
     // Private Methods //
 private:
     void checkStatus();
     void initBoard(int width, int height);
+
 
     // iVars //
 private:
@@ -282,8 +308,9 @@ private:
 
     int m_matchedPairsCount;
 
-    int m_triesCount;
-    int m_maxTriesCount;
+    int  m_triesCount;
+    int  m_maxTriesCount;
+    bool m_matchCountAsTry;
 
     CoreRandom::Random m_random;
 };

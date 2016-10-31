@@ -48,17 +48,24 @@
 //Usings
 USING_NS_COREMEMORY;
 
-
-// Constants / Enums / Typedefs //
+////////////////////////////////////////////////////////////////////////////////
+// Constants / Enums / Typedefs                                               //
+////////////////////////////////////////////////////////////////////////////////
 const int GameCore::kUnlimitedTries = -1;
 
-// CTOR/DTOR //
-GameCore::GameCore(int width, int height, int maxTries, int seed) :
+
+////////////////////////////////////////////////////////////////////////////////
+// CTOR/DTOR                                                                  //
+////////////////////////////////////////////////////////////////////////////////
+GameCore::GameCore(int width, int height,
+                   int maxTries, bool matchCountAsTry,
+                   int seed) :
     //m_board - Init in initBoard().
     m_status            (Status::Continue),
     m_matchedPairsCount (0),
     m_triesCount        (0),
     m_maxTriesCount     (maxTries),
+    m_matchCountAsTry   (matchCountAsTry),
     m_random            (seed)
 {
     if((width * height) % 2 != 0)
@@ -74,18 +81,23 @@ GameCore::GameCore(int width, int height, int maxTries, int seed) :
     initBoard(width, height);
 }
 
-// Public Methods //
-//Card.
+////////////////////////////////////////////////////////////////////////////////
+// Card                                                                       //
+////////////////////////////////////////////////////////////////////////////////
 const GameCore::Card& GameCore::getCardAt(const CoreCoord::Coord &coord) const
 {
     return m_board[coord.y][coord.x];
 }
+
 const GameCore::Card& GameCore::getCardAt(int index) const
 {
     return getCardAt(indexToCoord(index));
 }
 
-//Board.
+
+////////////////////////////////////////////////////////////////////////////////
+// Board                                                                      //
+////////////////////////////////////////////////////////////////////////////////
 const GameCore::Board& GameCore::getBoard() const
 {
     return m_board;
@@ -116,7 +128,10 @@ int GameCore::getRemainingPairsCount() const
     return getPairsCount() - getMatchedPairsCount();
 }
 
-//Match.
+
+////////////////////////////////////////////////////////////////////////////////
+// Match                                                                      //
+////////////////////////////////////////////////////////////////////////////////
 bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
                           const CoreCoord::Coord &coord2)
 {
@@ -142,15 +157,20 @@ bool GameCore::checkMatch(const CoreCoord::Coord &coord1,
 
     auto cardsAreEqual = (card1.value == card2.value);
 
-    //Tries count is increment regardless
-    //if player hit the guess or not.
-    ++m_triesCount;
-
     if(cardsAreEqual)
     {
         ++m_matchedPairsCount;
         const_cast<Card &>(card1).matched = true;
         const_cast<Card &>(card2).matched = true;
+
+        if(m_matchCountAsTry)
+            ++m_triesCount;
+    }
+    else
+    {
+        //Player miss the cards
+        // TryCount is incremented ALWAYS in this situation.
+        ++m_triesCount;
     }
 
     checkStatus();
@@ -162,21 +182,28 @@ bool GameCore::checkMatch(int index1, int index2)
     return checkMatch(indexToCoord(index1), indexToCoord(index2));
 }
 
-//Status.
+////////////////////////////////////////////////////////////////////////////////
+// Status                                                                     //
+////////////////////////////////////////////////////////////////////////////////
 Status GameCore::getStatus() const
 {
     return m_status;
 }
 
-//Tries.
+
+////////////////////////////////////////////////////////////////////////////////
+// Tries                                                                      //
+////////////////////////////////////////////////////////////////////////////////
 int GameCore::getTriesCount() const
 {
     return m_triesCount;
 }
+
 int GameCore::getMaxTriesCount() const
 {
     return m_maxTriesCount;
 }
+
 int GameCore::getRemainingTriesCount() const
 {
     if(m_maxTriesCount == kUnlimitedTries)
@@ -185,22 +212,35 @@ int GameCore::getRemainingTriesCount() const
     return m_maxTriesCount - m_triesCount;
 }
 
-//Seed.
+bool GameCore::getMatchCountAsTry() const
+{
+    return m_matchCountAsTry;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Seed                                                                       //
+////////////////////////////////////////////////////////////////////////////////
 int GameCore::getSeed() const
 {
     return m_random.getSeed();
 }
+
 bool GameCore::isUsingRandomSeed() const
 {
     return m_random.isUsingRandomSeed();
 }
 
-//Helpers.
+
+////////////////////////////////////////////////////////////////////////////////
+// Helpers                                                                    //
+////////////////////////////////////////////////////////////////////////////////
 CoreCoord::Coord GameCore::indexToCoord(int index) const
 {
     return CoreCoord::Coord(index / getWidth(),
                             index % getWidth());
 }
+
 int GameCore::coordToIndex(const CoreCoord::Coord &coord) const
 {
     return (coord.y * getHeight()) + coord.x;
@@ -211,12 +251,16 @@ bool GameCore::isValidCoord(const CoreCoord::Coord &coord) const
     return coord.y >= 0 && coord.y < getHeight()
         && coord.x >= 0 && coord.x < getWidth();
 }
+
 bool GameCore::isValidIndex(int index) const
 {
     return isValidCoord(indexToCoord(index));
 }
 
-//ascii
+
+////////////////////////////////////////////////////////////////////////////////
+// ascii                                                                      //
+////////////////////////////////////////////////////////////////////////////////
 std::string GameCore::ascii() const
 {
     std::stringstream ss;
