@@ -1,6 +1,14 @@
 --------------------------------------------------------------------------------
 | Version 0.2.x                                                                |
 --------------------------------------------------------------------------------
+v0.2.2 - [Oct 31, 2016]
+-- General --
+    - Add option to specify if a correct try (a Match)
+      will be counted against the tries count.
+    - Separated the code sections (Cosmetic)
+    - Update the CoreCoord lib.
+
+--------------------------------------------------------------------------------
 v0.2.1 - [Jul 15, 2016]
 -- General --
     - Update the mainpage.dox and README.md to
